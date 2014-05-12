@@ -4,6 +4,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/secure"
 	"github.com/fzzy/radix/redis"
 	"log"
 	"io"
@@ -14,6 +15,15 @@ func main() {
 	m := martini.Classic()
 	m.Use(render.Renderer())
 
+
+	martini.Env = martini.Prod  // You have to set the environment to `production` for all of secure to work properly!
+
+	m.Use(secure.Secure(secure.Options{
+	AllowedHosts: []string{"localhost:3000"},
+	SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
+}))
+
+	// Datastore connection
 	conn, err := redis.Dial("tcp", "127.0.0.1:6379")
 	errorHandler(err)
 	defer conn.Close()

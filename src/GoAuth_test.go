@@ -4,7 +4,6 @@ import (
 	"testing"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/fzzy/radix/redis"
-
 )
 
 func TestOneShouldBeEqualOne(t *testing.T) {
